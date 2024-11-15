@@ -1,0 +1,49 @@
+{
+    "categories": [
+      {
+        "name": "常用工具",
+        "links": [
+          {
+            "title": "Github",
+            "description": "全球最大的代码托管平台",
+            "url": "https://github.com"
+          },
+          {
+            "title": "VS Code",
+            "description": "最受欢迎的代码编辑器",
+            "url": "https://code.visualstudio.com"
+          }
+        ]
+      },
+      {
+        "name": "学习资源",
+        "links": [
+          {
+            "title": "MDN",
+            "description": "Web 开发者文档",
+            "url": "https://developer.mozilla.org"
+          },
+          {
+            "title": "Next.js",
+            "description": "React 框架",
+            "url": "https://nextjs.org"
+          }
+        ]
+      },
+      {
+        "name": "设计资源",
+        "links": [
+          {
+            "title": "Figma",
+            "description": "专业的设计工具",
+            "url": "https://figma.com"
+          },
+          {
+            "title": "Dribbble",
+            "description": "设计师社区",
+            "url": "https://dribbble.com"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# A-Nav 导航站
 
-## Getting Started
+一个使用 Next.js + Tailwind CSS + shadcn/ui 构建的现代导航网站。
 
-First, run the development server:
+## 特性
+
+- 🌓 支持深色/浅色主题切换
+- 📱 响应式设计，完美支持移动端
+- 🔍 全局搜索功能
+- 📋 分类导航
+- ⚡ 快速加载
+- 🎨 现代 UI 设计
+- 🚀 一键部署到 Vercel
+
+## 技术栈
+
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Lucide Icons
+
+## 开始使用
+
+1. 克隆仓库:
+
+```bash
+git clone https://github.com/your-username/a-nav.git
+cd a-nav
+```
+
+2. 安装依赖:
+
+```bash
+npm install
+```
+
+3. 启动开发服务器:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. 打开 [http://localhost:3000](http://localhost:3000) 查看结果。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 自定义导航数据
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+导航数据存储在 `src/data/navigation.json` 中，你可以根据需要修改它：
 
-## Learn More
+```json
+{
+  "categories": [
+    {
+      "name": "分类名称",
+      "links": [
+        {
+          "title": "链接标题",
+          "description": "链接描述",
+          "url": "https://example.com"
+        }
+      ]
+    }
+  ]
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 部署
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+项目可以轻松部署到 Vercel：
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/a-nav)
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT License
