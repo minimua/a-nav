@@ -7,21 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import navigationData from '@/data/navigation.json';
 
-// 类型定义
-interface Link {
-  title: string;
-  description: string;
-  url: string;
-}
-
-interface Category {
-  name: string;
-  links: Link[];
-}
-
-interface NavigationData {
-  categories: Category[];
-}
 
 const NavSite = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -105,7 +90,7 @@ const NavSite = () => {
         <main className="flex-1">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {(searchTerm ? filteredLinks : 
-              navigationData.categories.find(c => c.name === selectedCategory)?.links
+              navigationData.categories.find(c => c.name === selectedCategory)?.links || [] // 添加默认值
             ).map((link, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
@@ -127,7 +112,7 @@ const NavSite = () => {
       <footer className="border-t p-4 mt-8">
         <div className="container mx-auto flex justify-between items-center">
           <p className="text-sm text-gray-500">© 2024 导航站. All rights reserved.</p>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/minimua/a-nav" target="_blank" rel="noopener noreferrer">
             <Github className="h-5 w-5" />
           </a>
         </div>
