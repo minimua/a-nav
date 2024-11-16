@@ -11,6 +11,15 @@ interface NavSiteProps {
   initialData: NavigationData;
 }
 
+const getFaviconUrl = (url: string): string => {
+  try {
+    const urlObj = new URL(url);
+    return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64`;
+  } catch {
+    return '';
+  }
+};
+
 const NavSite = ({ initialData }: NavSiteProps) => {
   const [darkMode, setDarkMode] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,25 +42,23 @@ const NavSite = ({ initialData }: NavSiteProps) => {
     return null;
   }
 
-  // 辅助函数：渲染图标
-  const renderIcon = (icon: string) => {
-    if (!icon) return null;
+  const renderIcon = (icon: string, url?: string) => {
+    const iconUrl = icon || (url ? getFaviconUrl(url) : '');
     
-    if (icon.startsWith('http')) {
-      return (
-        <img 
-          src={icon} 
-          alt="" 
-          className="w-5 h-5 rounded-sm object-cover flex-shrink-0"
-          onError={(e) => {
-            console.error('Image loading error:', e);
-            (e.target as HTMLImageElement).style.display = 'none';
-          }}
-        />
-      );
-    }
+    if (!iconUrl) return null;
     
-    return <span className="w-5 h-5 flex-shrink-0">{icon}</span>;
+    return (
+      <img 
+        src={iconUrl}
+        alt=""
+        className="w-5 h-5 rounded-sm object-contain flex-shrink-0"
+        onError={(e) => {
+          console.error('Image loading error:', e);
+          const imgElement = e.target as HTMLImageElement;
+          imgElement.style.display = 'none';
+        }}
+      />
+    );
   };
 
   const filteredLinks = initialData.categories.flatMap(category => 
@@ -122,7 +129,7 @@ const NavSite = ({ initialData }: NavSiteProps) => {
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    {link.icon && renderIcon(link.icon)}
+                    {renderIcon(link.icon || '', link.url)}
                     <span className="flex-1">{link.title}</span>
                   </CardTitle>
                   <CardDescription>{link.description}</CardDescription>
