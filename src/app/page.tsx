@@ -1,5 +1,7 @@
-import NavSite from "@/components/nav-site"
+import NavSite from '@/components/nav-site';
+import { getNavigationData } from '@/lib/notion';
 
-export default function Home() {
-  return <NavSite />
+export default async function Home() {
+  const data = await getNavigationData();
+  return <NavSite initialData={data} />;
 }

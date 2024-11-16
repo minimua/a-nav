@@ -5,13 +5,16 @@ import { Moon, Sun, Search, Github } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import navigationData from '@/data/navigation.json';
+import { NavigationData } from '@/types/navigation';
 
+interface NavSiteProps {
+  initialData: NavigationData;
+}
 
-const NavSite = () => {
+const NavSite = ({ initialData }: NavSiteProps) => {
   const [darkMode, setDarkMode] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(navigationData.categories[0].name);
+  const [selectedCategory, setSelectedCategory] = useState(initialData.categories[0].name);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -30,12 +33,37 @@ const NavSite = () => {
     return null;
   }
 
-  const filteredLinks = navigationData.categories.flatMap(category => 
+  // 辅助函数：渲染图标
+  const renderIcon = (icon: string) => {
+    if (!icon) return null;
+    
+    if (icon.startsWith('http')) {
+      return (
+        <img 
+          src={icon} 
+          alt="" 
+          className="w-5 h-5 rounded-sm object-cover flex-shrink-0"
+          onError={(e) => {
+            console.error('Image loading error:', e);
+            (e.target as HTMLImageElement).style.display = 'none';
+          }}
+        />
+      );
+    }
+    
+    return <span className="w-5 h-5 flex-shrink-0">{icon}</span>;
+  };
+
+  const filteredLinks = initialData.categories.flatMap(category => 
     category.links.filter(link => 
       link.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       link.description.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
+
+  const currentLinks = searchTerm
+    ? filteredLinks
+    : initialData.categories.find(c => c.name === selectedCategory)?.links || [];
 
   return (
     <div className={`min-h-screen flex flex-col ${darkMode ? 'dark bg-gray-900 text-white' : 'bg-white'}`}>
@@ -59,7 +87,7 @@ const NavSite = () => {
               size="icon"
               onClick={() => setDarkMode(!darkMode)}
             >
-              {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </Button>
           </div>
         </div>
@@ -71,14 +99,15 @@ const NavSite = () => {
         <aside className="md:w-64 flex-shrink-0">
           <nav className="sticky top-24">
             <ul className="space-y-2">
-              {navigationData.categories.map((category) => (
+              {initialData.categories.map((category) => (
                 <li key={category.name}>
                   <Button
                     variant={selectedCategory === category.name ? "secondary" : "ghost"}
-                    className="w-full justify-start"
+                    className="w-full justify-start gap-2"
                     onClick={() => setSelectedCategory(category.name)}
                   >
-                    {category.name}
+                    {category.icon && renderIcon(category.icon)}
+                    <span>{category.name}</span>
                   </Button>
                 </li>
               ))}
@@ -89,16 +118,33 @@ const NavSite = () => {
         {/* Main Content */}
         <main className="flex-1">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {(searchTerm ? filteredLinks : 
-              navigationData.categories.find(c => c.name === selectedCategory)?.links || [] // 添加默认值
-            ).map((link, index) => (
+            {currentLinks.map((link, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle>{link.title}</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    {link.icon && renderIcon(link.icon)}
+                    <span className="flex-1">{link.title}</span>
+                  </CardTitle>
                   <CardDescription>{link.description}</CardDescription>
+                  {link.tags && link.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {link.tags.map((tag, tagIndex) => (
+                        <span 
+                          key={tagIndex}
+                          className="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-800"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </CardHeader>
                 <CardContent>
-                  <Button variant="outline" className="w-full" onClick={() => window.open(link.url, '_blank')}>
+                  <Button 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={() => window.open(link.url, '_blank')}
+                  >
                     访问
                   </Button>
                 </CardContent>
@@ -111,9 +157,14 @@ const NavSite = () => {
       {/* Footer */}
       <footer className="border-t p-4 mt-8">
         <div className="container mx-auto flex justify-between items-center">
-          <p className="text-sm text-gray-500">© 2024 导航站. All rights reserved.</p>
-          <a href="https://github.com/minimua/a-nav" target="_blank" rel="noopener noreferrer">
-            <Github className="h-5 w-5" />
+          <p className="text-sm text-gray-500">© 2024 一个导航. All rights reserved.</p>
+          <a 
+            href="https://github.com/minimua/a-nav" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:text-gray-600 transition-colors"
+          >
+            <Github size={20} />
           </a>
         </div>
       </footer>
