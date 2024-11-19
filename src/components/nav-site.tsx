@@ -14,7 +14,8 @@ interface NavSiteProps {
 const getFaviconUrl = (url: string): string => {
   try {
     const urlObj = new URL(url);
-    return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64`;
+    // return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64`;
+    return `https://www.faviconextractor.com/favicon/${urlObj.hostname}?larger=true`;
   } catch {
     return '';
   }
