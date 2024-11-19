@@ -1,27 +1,26 @@
-import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
+import { Metadata } from 'next';
+import './globals.css';
+import localFont from 'next/font/local';
 
-const inter = Inter({ subsets: ["latin"] })
+const lxgw = localFont({
+  src: './fonts/LXGWWenKai-Regular.ttf',
+  display: 'swap',
+  variable: '--font-lxgw',
+});
 
 export const metadata: Metadata = {
   title: "一个导航",
   description: "A modern web navigation site",
-}
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-}
+};
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
-    <html lang="zh" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>{children}</body>
+    <html lang="zh">
+      <body className={lxgw.className}>{children}</body>
     </html>
-  )
+  );
 }
