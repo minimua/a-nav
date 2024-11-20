@@ -74,3 +74,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+@font-face {
+  font-family: 'LXGW WenKai';
+  src: url('https://cdn.jsdelivr.net/gh/minimua/a-nav@main/public/fonts/LXGWWenKai-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
