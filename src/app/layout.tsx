@@ -1,12 +1,5 @@
 import { Metadata } from 'next';
 import './globals.css';
-import localFont from 'next/font/local';
-
-const lxgw = localFont({
-  src: './fonts/LXGWWenKai-Regular.ttf',
-  display: 'swap',
-  variable: '--font-lxgw',
-});
 
 export const metadata: Metadata = {
   title: "一个导航",
@@ -20,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh">
-      <body className={lxgw.className}>{children}</body>
+      <body className="font-['LXGW_WenKai'] antialiased">{children}</body>
     </html>
   );
 }
