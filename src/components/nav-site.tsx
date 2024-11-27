@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Search, Github } from 'lucide-react';
+import { Moon, Sun, Search, Github, Menu } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { NavigationData } from '@/types/navigation';
-
 interface NavSiteProps {
   initialData: NavigationData;
 }
@@ -14,7 +14,6 @@ interface NavSiteProps {
 const getFaviconUrl = (url: string): string => {
   try {
     const urlObj = new URL(url);
-    // return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64`;
     return `https://www.faviconextractor.com/favicon/${urlObj.hostname}?larger=true`;
   } catch {
     return '';
@@ -26,6 +25,7 @@ const NavSite = ({ initialData }: NavSiteProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(initialData.categories[0].name);
   const [mounted, setMounted] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -73,12 +73,42 @@ const NavSite = ({ initialData }: NavSiteProps) => {
     ? filteredLinks
     : initialData.categories.find(c => c.name === selectedCategory)?.links || [];
 
+  const CategoryList = () => (
+    <ul className="space-y-2">
+      {initialData.categories.map((category) => (
+        <li key={category.name}>
+          <Button
+            variant={selectedCategory === category.name ? "secondary" : "ghost"}
+            className="w-full justify-start gap-2"
+            onClick={() => {
+              setSelectedCategory(category.name);
+              setIsSidebarOpen(false);
+            }}
+          >
+            {category.icon && renderIcon(category.icon)}
+            <span>{category.name}</span>
+          </Button>
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
     <div className={`min-h-screen flex flex-col ${darkMode ? 'dark bg-gray-900 text-white' : 'bg-white'}`}>
       {/* Header */}
       <header className="border-b p-4 sticky top-0 bg-inherit z-10">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <h1 className="text-xl font-bold">一个导航</h1>
+          <div className="flex items-center gap-4 w-full md:w-auto">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <Menu size={20} />
+            </Button>
+            <h1 className="text-xl font-bold">一个导航</h1>
+          </div>
           <div className="flex items-center gap-4 w-full md:w-auto">
             <div className="relative flex-1 md:flex-initial">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
@@ -101,25 +131,24 @@ const NavSite = ({ initialData }: NavSiteProps) => {
         </div>
       </header>
 
+      {/* Mobile Sidebar */}
+      <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+        <SheetContent side="left" className="w-[240px] sm:w-[280px]">
+          <SheetHeader>
+            <SheetTitle>导航分类</SheetTitle>
+          </SheetHeader>
+          <nav className="mt-4">
+            <CategoryList />
+          </nav>
+        </SheetContent>
+      </Sheet>
+
       {/* Main Content */}
       <div className="flex-1 container mx-auto flex flex-col md:flex-row gap-6 p-4">
-        {/* Sidebar */}
-        <aside className="md:w-64 flex-shrink-0">
+        {/* Desktop Sidebar */}
+        <aside className="hidden md:block md:w-64 flex-shrink-0">
           <nav className="sticky top-24">
-            <ul className="space-y-2">
-              {initialData.categories.map((category) => (
-                <li key={category.name}>
-                  <Button
-                    variant={selectedCategory === category.name ? "secondary" : "ghost"}
-                    className="w-full justify-start gap-2"
-                    onClick={() => setSelectedCategory(category.name)}
-                  >
-                    {category.icon && renderIcon(category.icon)}
-                    <span>{category.name}</span>
-                  </Button>
-                </li>
-              ))}
-            </ul>
+            <CategoryList />
           </nav>
         </aside>
 
